@@ -1,0 +1,656 @@
+
+ 
+  <!DOCTYPE html>
+  <html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Username Generator</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+      <style>
+          body {
+              font-family: Arial, sans-serif;
+              margin: 20px;
+          }
+  
+          .container {
+              max-width: 400px;
+              margin: auto;
+              padding: 20px;
+              border: 1px solid #ccc;
+              border-radius: 10px;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          }
+  
+          .options-container,
+          .button-container {
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 0;
+          }
+  
+          .options-left {
+              margin-bottom: 20px;
+          }
+  
+          .options-right {
+              margin-bottom: 20px;
+          }
+  
+          .options-right {
+              margin-left: 20px;
+          }
+  
+          label {
+              display: flex;
+              align-items: center;
+              margin-bottom: 10px;
+          }
+  
+          input[type="range"] {
+              -webkit-appearance: none;
+              appearance: none;
+              width: 100%;
+              height: 8px;
+              background: linear-gradient(to right, #f56d11 0%, rgb(207, 167, 22) var(--range-progress), #ddd var(--range-progress), #ddd 100%);
+              border-radius: 5px;
+              outline: none;
+          }
+  
+          input[type="range"]::-webkit-slider-runnable-track,
+          input[type="range"]::-moz-range-track,
+          input[type="range"]::-ms-track {
+              height: 8px;
+              cursor: pointer;
+              background: transparent;
+          }
+  
+          input[type="range"]::-webkit-slider-thumb,
+          input[type="range"]::-moz-range-thumb,
+          input[type="range"]::-ms-thumb {
+              width: 20px;
+              height: 20px;
+              background: rgb(207, 167, 22);
+              cursor: pointer;
+              border-radius: 50%;
+              margin-top: -6px;
+          }
+          .hidden {
+            display: none;
+        }
+  
+          input[type="number"] {
+              margin-top: 20px;
+              width: 40px;
+              text-align: center;
+              height: 20px;
+              padding: 3px;
+              box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+              margin-left: 10px;
+          }
+  
+          button {
+              padding: 15px 20px;
+              background-color : #58A8C9;
+              color: white;
+              border: none;
+              border-radius: 5px;
+              cursor: pointer;
+              margin-top: 10px;
+              width: 120px;
+          }
+          #step4 button.generate-button {
+            background-color: rgb(81, 210, 81);
+        }
+        step4 button.generate-button:hover{
+            background-color: rgb(81, 210, 81);
+        }
+        
+  
+          button:hover {
+              background-color: rgb(93, 172, 214);
+          }
+          .username-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+  
+          .result {
+              margin-top: 20px;
+              padding: 10px;
+              border: 1px solid #ccc;
+              position: relative;
+              display: flex;
+              align-items: center;
+          }
+  
+          .result-text {
+              flex: 1;
+          }
+  
+          .icon-container {
+              display: right;
+              gap: 10px;
+          }
+  
+          .copy-icon {
+              width: 20px;
+              height: 20px;
+              cursor: pointer;
+          }
+  
+          input[type="radio"],
+          input[type="checkbox"] {
+              -webkit-appearance: none;
+              -moz-appearance: none;
+              appearance: none;
+              background-color: #fff;
+              border: 1px solid rgb(207, 167, 22);
+              width: 16px;
+              height: 16px;
+              cursor: pointer;
+              outline: none;
+              margin-right: 10px;
+              position: relative;
+          }
+  
+          input[type="radio"] {
+              border-radius: 50%;
+          }
+  
+          input[type="radio"]::before,
+          input[type="checkbox"]::before {
+              content: '';
+              display: block;
+              width: 10px;
+              height: 10px;
+              border-radius: 50%;
+              background-color: white;
+              transform: scale(0);
+              transition: transform 0.2s ease-in-out;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%) scale(0);
+          }
+  
+          input[type="checkbox"] {
+              border-radius: 3px;
+          }
+  
+          input[type="checkbox"]::before {
+              border-radius: 3px;
+          }
+  
+          input[type="radio"]:checked::before,
+          input[type="checkbox"]:checked::before {
+              transform: translate(-50%, -50%) scale(1);
+              background-color: rgb(207, 167, 22);
+              color: white;
+          }
+  
+          input[type="radio"]:checked {
+              border: 1px solid rgb(207, 167, 22);
+          }
+  
+          input[type="checkbox"]:checked {
+              border: 1px solid rgb(207,167,22);
+          }
+  
+          input[type="checkbox"]:checked::before {
+              content: '✓';
+              display: block;
+              text-align: center;
+              line-height: 10px;
+              color: white;
+              font-size: 10px;
+          }
+  
+          .hidden {
+              display: none;
+          }
+  
+          
+  
+          h2 {
+              color: #B16774
+          }
+  
+          h1 {
+              color: #B16774
+          }
+          .button-container .step1-next-button {
+               margin-left: auto; 
+               
+          }
+          #desiredUsername {
+            width: 100%; 
+            padding: 8px; 
+            margin-top: 10px; 
+            font-size: 16px; 
+            border: 1px solid #ccc; 
+            border-radius: 5px; 
+        }
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+ 
+        .hidden { display: none; }
+        .result-box { margin: 10px 0; padding: 10px; border: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center; }
+        .result-text { flex-grow: 1; }
+        .copy-icon { cursor: pointer; }
+        .username-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 10px; 
+        }
+
+      </style>
+  </head>
+  
+  <body>
+      <div class="container">
+        <div id="step1">
+            <h2>Input Type</h2>
+            <div class="options-left">
+                <label><input type="radio" name="userType" value="enterUsername" onclick="toggleUsernameInput(true)" checked> Enter Username </label>
+                <label><input type="radio" name="userType" value="randomUser" onclick="toggleUsernameInput(false)"> Random User</label>
+            </div>
+            <input type="text" id="desiredUsername" placeholder="Enter your username...">
+            <div class="button-container">
+                <button class="step1-next-button" onclick="handleNextButtonClick()">Next</button>
+            </div>
+        
+        </div>
+        
+         <div id="step2" class="hidden">
+              <h2>FOR PLATFORM?</h2>
+              <div class="options-left">
+                  <label><input type="radio" name="socialMedia" value="Facebook" checked> Facebook</label>
+                  <label><input type="radio" name="socialMedia" value="YouTube"> YouTube</label>
+                  <label><input type="radio" name="socialMedia" value="Instagram"> Instagram</label>
+                  <label><input type="radio" name="socialMedia" value="TikTok"> TikTok</label>
+                  <label><input type="radio" name="socialMedia" value="Snapchat"> Snapchat</label>
+                  <label><input type="radio" name="socialMedia" value="Email"> Email</label>
+              </div>
+              <h2>GENDER</h2>
+              <div class="options-left">
+                  <label><input type="radio" name="gender" value="Male" checked> Male</label>
+                  <label><input type="radio" name="gender" value="Female"> Female</label>
+                  <label><input type="radio" name="gender" value="Female">Gender Neutral/Unisex</label>
+              </div>
+              <div class="button-container">
+                  <button onclick="showStep(1)">Back</button>
+                  <button onclick="showStep(3)">Next</button>
+              </div>
+          </div>
+       
+          <div id="step3" class="hidden">
+            <h2>STYLES</h2>
+            <div class="options-left">
+                <label><input type="radio" name="category" value="Funny" checked> Funny</label>
+                <label><input type="radio" name="category" value="Aesthetic"> Aesthetic</label>
+                <label><input type="radio" name="category" value="Professional"> Professional</label>
+                <label><input type="radio" name="category" value="Random"> Random</label>
+                <label><input type="radio" name="category" value="Cute"> Cute</label>
+                <label><input type="radio" name="category" value="Cool"> Cool</label>
+                <label><input type="radio" name="category" value="Unique"> Unique</label>
+                <label><input type="radio" name="category" value="Popular"> Popular</label>
+                <label><input type="radio" name="category" value="EasyToRead"> Easy To Read</label>
+            </div>
+            <div class="button-container">
+                <button onclick="showStep(2)">Back</button>
+                <button onclick="handleStep3NextButtonClick()">Next</button>
+            </div>
+        </div>
+        <div id="step5" class="hidden">
+            <h1>Specified Usename </h1>
+            <div id="usernameContainer" class="username-container">
+                <!-- Usernames will be displayed here -->
+            </div>
+            <div class="button-container">
+                
+                <button onclick="showStep(3)">Back</button>
+                <button onclick="generateUsernames()">Generate Usernames</button>
+            </div>
+            <script>
+                // Function to generate usernames
+                function generateUsernames(isRandom = false) {
+                    const usernameInput = document.getElementById('desiredUsername');
+                    const firstName = isRandom ? 'User' : usernameInput.value.trim();
+                    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+                    const numUsernames = 10;
+            
+                    if (isRandom || firstName) {
+                        let usernames = [];
+                        for (let i = 0; i < numUsernames; i++) {
+                            const isPrefix = Math.random() < 0.5;
+                            const randomString = generateRandomString(chars, isPrefix ? Math.floor(Math.random() * 6) + 1 : 5);
+                            const username = isPrefix ? `${randomString}${firstName}` : `${firstName}${randomString}`;
+                            usernames.push(username);
+                        }
+                        displayUsernames(usernames);
+                    } else {
+                        alert('Please enter a username.');
+                    } 
+                }
+            
+                // Function to display usernames in Step 5
+                function displayUsernames(usernames) {
+                    const usernameContainer = document.getElementById('usernameContainer');
+                    usernameContainer.innerHTML = '';
+            
+                    usernames.forEach(username => {
+                        const usernameBox = document.createElement('div');
+                        usernameBox.classList.add('result-box');
+            
+                        const usernameText = document.createElement('div');
+                        usernameText.classList.add('result-text');
+                        usernameText.textContent = username;
+            
+                        const copyIcon = document.createElement('i');
+                        copyIcon.classList.add('fas', 'fa-copy', 'copy-icon');
+                        copyIcon.title = 'Copy Username';
+                        copyIcon.style.cursor = 'pointer';
+                        copyIcon.addEventListener('click', function() {
+                            copyToClipboard(username);
+                        });
+            
+                        usernameBox.appendChild(usernameText);
+                        usernameBox.appendChild(copyIcon);
+                        usernameContainer.appendChild(usernameBox);
+                    });
+                }
+            
+                // Function to copy username to clipboard
+                function copyToClipboard(text) {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    alert(`Copied '${text}' to clipboard`);
+                }
+            
+                // Function to generate a random string
+                function generateRandomString(chars, length) {
+                    let result = '';
+                    for (let i = 0; i < length; i++) {
+                        result += chars.charAt(Math.floor(Math.random() * chars.length));
+                    }
+                    return result;
+                }
+                generateUsernames();
+            </script>
+        </div>
+        
+        
+          <div id="step4" class="hidden">
+              <h1>USERNAME GENERATOR</h1>
+              <div class="options-left">
+                  <label for="length">Character Length:</label>
+                  <input type="range" id="length" min="1" max="20" value="8">
+                  <input type="number" id="lengthInput" min="1" max="20" value="8">
+                </div>
+                <div class="options-container">
+                    <div class="options-left">
+                        <label><input type="radio" name="charType" value="recommended" checked> Recommended</label>
+                        <label><input type="radio" name="charType" value="allCharacters"> All characters</label>
+                    </div>
+                    <div class="options-right">
+                        <label><input type="checkbox" id="uppercase"> Uppercase</label>
+                        <label><input type="checkbox" id="lowercase"> Lowercase</label>
+                        <label><input type="checkbox" id="numbers"> Numbers</label>
+                        <label><input type="checkbox" id="symbols"> Symbols</label>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button onclick="showStep(3)">Back</button>
+                    <button onclick="markCompleted()" class="generate-button">Completed</button>
+                </div>
+                <!-- <div id="usernameResult" class="result">
+                    <div class="result-text">aufpsicj</div>
+                    <div class="icon-container">
+                        <i class="far fa-copy copy-icon" onclick="copyUsername()"></i>
+                    </div>
+                </div> -->
+                <div id="usernameResults">
+                    <div class="result" id="result1">
+                        <div class="result-text"></div>
+                        <div class="icon-container">
+                            <i class="fas fa-copy copy-icon" onclick="copyUsername('result1')"></i>
+                        </div>
+                    </div>
+                    <div class="result" id="result2">
+                        <div class="result-text"></div>
+                        <div class="icon-container">
+                            <i class="fas fa-copy copy-icon" onclick="copyUsername('result2')"></i>
+                        </div>
+                    </div>
+                    <div class="result" id="result3">
+                        <div class="result-text"></div>
+                        <div class="icon-container">
+                            <i class="fas fa-copy copy-icon" onclick="copyUsername('result3')"></i>
+                        </div>
+                    </div>
+                    <div class="result" id="result4">
+                        <div class="result-text"></div>
+                        <div class="icon-container">
+                            <i class="fas fa-copy copy-icon" onclick="copyUsername('result4')"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="result" id="result5">
+                        <div class="result-text"></div>
+                        <div class="icon-container">
+                            <i class="fas fa-copy copy-icon" onclick="copyUsername('result5')"></i>
+                        </div>
+                   
+                    
+                    
+                </div>
+                
+            </div>
+        </div>
+
+
+        <script>
+            // Function to handle the Next button click in Step 1
+            function handleNextButtonClick() {
+                const enterUsernameChecked = document.querySelector('input[name="userType"][value="enterUsername"]').checked;
+
+                if (enterUsernameChecked) {
+                showStep(2); 
+            
+                } else {
+                    showStep(2);
+                }
+            }
+           
+            // Function to handle the Next button click in Step 3
+            function handleStep3NextButtonClick() {
+                const randomUserChecked = document.querySelector('input[name="userType"][value="randomUser"]').checked;
+
+                if (randomUserChecked) {
+                    showStep(4); 
+                } else {
+                    showStep(5); 
+                }
+            }
+                    
+        function toggleUsernameInput(showInput) {
+            var usernameInput = document.getElementById('desiredUsername');
+            if (showInput) {
+                usernameInput.classList.remove('hidden');
+            } else {
+                usernameInput.classList.add('hidden');
+            }
+        }
+    
+            // Function to show a specific step by ID
+            function showStep(stepNumber) {
+                const stepElements = document.querySelectorAll('.step');
+                stepElements.forEach(step => {
+                    step.classList.add('hidden');
+                });
+    
+                const stepToShow = document.getElementById('step' + stepNumber);
+                if (stepToShow) {
+                    stepToShow.classList.remove('hidden');
+                }
+                
+            }
+        </script>
+    
+        <script>
+            function showStep(step) {
+                document.getElementById('step1').classList.add('hidden');
+                document.getElementById('step2').classList.add('hidden');
+                document.getElementById('step3').classList.add('hidden');
+                document.getElementById('step4').classList.add('hidden');
+                document.getElementById('step5').classList.add('hidden')
+                document.getElementById('step' + step).classList.remove('hidden');
+            }
+    
+            function updateRangeBackground(rangeInput) {
+                const value = (rangeInput.value - rangeInput.min) / (rangeInput.max - rangeInput.min) * 100;
+                rangeInput.style.setProperty('--range-progress', value + '%');
+            }
+    
+            const rangeInput = document.getElementById('length');
+            updateRangeBackground(rangeInput);
+    
+            rangeInput.addEventListener('input', function () {
+                document.getElementById('lengthInput').value = this.value;
+                updateRangeBackground(this);
+                
+            });
+    
+            document.getElementById('lengthInput').addEventListener('input', function () {
+                document.getElementById('length').value = this.value;
+                updateRangeBackground(document.getElementById('length'));
+               
+            });
+    
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', generateUsername);
+            });
+    
+            const radios = document.querySelectorAll('input[type="radio"]');
+            radios.forEach(radio => {
+                radio.addEventListener('click', generateUsername);
+            });
+
+            function generateUsername() {
+                for (let i = 1; i <= 5; i++){
+            const length = parseInt(document.getElementById('length').value);
+            const uppercase = document.getElementById('uppercase').checked;
+            const lowercase = document.getElementById('lowercase').checked;
+            const numbers = document.getElementById('numbers').checked;
+            const symbols = document.getElementById('symbols').checked;
+            const category = document.querySelector('input[name="category"]:checked').value;
+
+            let charset = '';
+            let username = '';
+            
+
+            if (category === 'Professional') {
+                const words = ["Expert", "Pro", "Master", "Guru", "Leader", "Ace", "Specialist", "Whiz", "Authority", "Consultant"];
+                username = words[Math.floor(Math.random() * words.length)];
+                charset = '0123456789';
+            } else if (category === 'Funny') {
+                const words = ["Giggle", "Chuckle", "Snicker", "Joker", "Banter", "Goof", "Buffoon", "Prank", "Gag", "Quip"];
+                username = words[Math.floor(Math.random() * words.length)];
+                charset = 'abcdefghijklmnopqrstuvwxyz';
+            } else if (category === 'Aesthetic') {
+                const words = ["Luna", "Velvet", "Bliss", "Serene", "Aura", "Opal", "Iris", "Dream", "Echo", "Zenith"];
+                username = words[Math.floor(Math.random() * words.length)];
+                charset = 'abcdefghijklmnopqrstuvwxyz';
+            } else if (category === 'Random') {
+                charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=[]{}|;:,.<>?';
+            } else if (category === 'Cute') {
+                const words = ["Bunny", "Kitty", "Peach", "Berry", "Muffin", "Sparkle", "Sweetie", "Cupcake", "Butterfly", "Rainbow"];
+                username = words[Math.floor(Math.random() * words.length)];
+                charset = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+            } else if (category === 'Cool') {
+                const words = ["Blaze", "Shadow", "Raven", "Frost", "Vortex", "Cipher", "Neo", "Cosmo", "Thunder", "Storm"];
+                username = words[Math.floor(Math.random() * words.length)];
+                charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=[]{}|;:,.<>?';
+            } else if (category === 'Unique') {
+                const words = ["Quasar", "Zephyr", "Lynx", "Orion", "Nova", "Phoenix", "Solstice", "Xenon", "Nyx", "Eclipse"];
+                username = words[Math.floor(Math.random() * words.length)];
+                charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=[]{}|;:,.<>?';
+            } else if (category === 'Popular') {
+                const words = ["Star", "Hero", "Champ", "Boss", "Legend", "Icon", "Ace", "King", "Queen", "VIP"];
+                username = words[Math.floor(Math.random() * words.length)];
+                charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            } else if (category === 'EasyToRead') {
+                charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=[]{}|;:,.<>?';
+            }
+
+            if (uppercase) {
+                charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            }
+
+            if (lowercase) {
+                charset += 'abcdefghijklmnopqrstuvwxyz';
+            }
+
+            if (numbers) {
+                charset += '0123456789';
+            }
+
+            if (symbols) {
+                charset += '!@#$%^&*()_-+=[]{}|;:,.<>?';
+            }
+
+            if (charset) {
+                for (let i = username.length; i < length; i++) {
+                    username += charset.charAt(Math.floor(Math.random() * charset.length));
+                }
+            }
+
+            if (uppercase) {
+                username = username.toUpperCase();
+            }
+
+            if (lowercase) {
+                username = username.toLowerCase();
+            }
+            if (!uppercase && !lowercase && !numbers && !symbols) {
+                charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=[]{}|;:,.<>?';
+            }
+            // document.getElementById('usernameResult').classList.remove('hidden');
+            // document.querySelector('.result-text').textContent = username;
+            document.getElementById('result' + i).classList.remove('hidden');
+        document.getElementById('result' + i).querySelector('.result-text').textContent = username;
+        }}
+
+        function copyUsername() {
+            const username = document.querySelector('.result-text').textContent;
+            navigator.clipboard.writeText(username)
+                .then(() => alert('Username copied to clipboard'))
+                .catch(err => console.error('Failed to copy username: ', err));
+        }
+
+        function markCompleted() {
+            alert('Task marked as completed!');
+        }
+
+        // Initial generation
+        generateUsername();
+        </script>
+    </body>
+    
+    </html>
+    
+  
